@@ -1,7 +1,10 @@
 .idea/
 .idea
 idea/
-
+Скрипт 1. Перименование и подготовка файлов/
+Скрипт 2. Формирование предварительной таблицы/
+Скрипт 3. Распределение по папкам/
+Скрипт 4. Возврат после фш/
 # Environments
 .env
 .venv
@@ -10,3 +13,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+__pycache__/constants.cpython-310.pyc
+__pycache__/domain.cpython-310.pyc
+__pycache__/settings.cpython-310.pyc
+__pycache__/
+Тестовые данные/
+Промежуточная_таблица.xlsx
