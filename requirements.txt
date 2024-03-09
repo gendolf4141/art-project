@@ -1,0 +1,14 @@
+altgraph==0.17.4
+annotated-types==0.6.0
+customtkinter==5.2.2
+darkdetect==0.8.0
+et-xmlfile==1.1.0
+openpyxl==3.1.2
+packaging==23.2
+pillow==10.2.0
+pydantic==2.6.0
+pydantic_core==2.16.1
+pyinstaller==6.4.0
+pyinstaller-hooks-contrib==2024.2
+python-dotenv==1.0.1
+typing_extensions==4.9.0
