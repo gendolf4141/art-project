@@ -207,7 +207,7 @@ def rename_path(images_parameters: list[ImageParameters], root_dir: Path) -> Non
     os.rename(root_dir, root_dir.parent / translate(root_dir.name))
 
 
-def run_fast_scandir(directory: Path, article: int, base_directory_name: str):
+def run_fast_scandir(directory: Path, article: int, base_directory_name: str, log: list[str]):
     count = 1
     sub_folders = []
     images_parameters = []
@@ -226,7 +226,6 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str):
 
         if file.is_file():
             new_img_name = f"{new_name_dir}-{count}.jpg"
-            # TODO: Добавить проверку и изменений формата файла на .jpg
             try:
                 img = Image.open(file)
                 width, height = img.size
@@ -235,9 +234,11 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str):
                 aspect_ratio = get_extension_by_coefficient(coefficient)
                 orientation = get_orientation_by_aspect_ratio(width, height)
             except UnidentifiedImageError:
-                new_img_name = "Не удается идентифицировать файл изображения"
+                new_img_name = f"Не удается идентифицировать файл изображения: {file}"
+                log.append(new_name_dir)
                 width = height = coefficient = aspect_ratio = orientation = None
-            img_name = f"{new_name_dir} Арт.{article}"
+
+            img_name = f"{directory.name} Арт.{article}"
             img_link = f"https://liss-art.ru/wp-content/uploads/img-product1" + str(new_full_path_dir) + new_img_name
             os.remove(file)
 
@@ -262,10 +263,10 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str):
             images_parameters.append(image_parameters)
 
     for dir in list(sub_folders):
-        sf, file, article = run_fast_scandir(dir, article, base_directory_name)
+        sf, file, article, log = run_fast_scandir(dir, article, base_directory_name, log)
         sub_folders.extend(sf)
         images_parameters.extend(file)
 
-    return sub_folders, images_parameters, article
+    return sub_folders, images_parameters, article, log
 
 

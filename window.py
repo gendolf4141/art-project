@@ -113,17 +113,21 @@ class TabOne:
         if not self.folder_selected or not self.folder_selected.is_dir():
             return show_warning_no_directory()
         self.log("Скрипт запущен!")
-        sub_folders, images_parameters, article = run_fast_scandir(
+        logs = []
+        sub_folders, images_parameters, article, logs = run_fast_scandir(
             self.folder_selected,
             settings.article,
-            self.folder_selected.name
+            self.folder_selected.name,
+            logs,
         )
         rename_path(images_parameters, self.folder_selected)
         new_file_excel = self.folder_selected.parent / self.name_file
 
         to_excel(images_parameters, self.COLUMN_TITLE, new_file_excel)
-        for num in range(100):
-            self.log(f"Тестовый лог {num}")
+
+        for log in logs:
+            self.log(log)
+
         self.log(show_info_script_completed())
 
     def get_directory(self):
