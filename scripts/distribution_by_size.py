@@ -15,9 +15,19 @@ def create_aspect_ratio_name(aspect_ratio: str, orientation: str):
         return aspect_ratio.replace('*', '')
 
 
-def get_unique_values(file_excel: Path):
+class DistributionBySize:
+    sheet_name = "Страница"
+    file_excel = ""
+
+
+def read_excel(file_excel: Path):
     workbook = load_workbook(filename=file_excel)
     sheet = workbook["Страница"]
+    return sheet.iter_rows(min_row=2, values_only=True)
+
+
+def get_unique_values(file_excel: Path):
+    data = read_excel(file_excel)
 
     name_path = "Распределенные_картинки"
     directory_path = file_excel.parent / name_path
@@ -28,7 +38,7 @@ def get_unique_values(file_excel: Path):
     values = []
     logs = []
 
-    for num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+    for row in data:
         aspect_ratio = row[8]
         orientation = row[9]
         file_name = row[2]
@@ -69,3 +79,6 @@ def get_unique_values(file_excel: Path):
 
     return values, logs
 
+
+def run_distribution_by_size():
+    pass

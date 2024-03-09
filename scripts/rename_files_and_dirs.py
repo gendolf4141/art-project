@@ -9,9 +9,6 @@ from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.workbook import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
-FILE_NAME_TO_SAVE = "Промежуточная_таблица.xlsx"
-COLUMN_TITLE = [field.description for _, field in ImageParameters.model_fields.items()]
-
 
 def _format_xlsx_title(ws: Worksheet, title: list[str], extend_width: int = 0) -> None:
     """Форматирование заголовка"""
@@ -35,7 +32,7 @@ def _format_xlsx_title(ws: Worksheet, title: list[str], extend_width: int = 0) -
         ws.column_dimensions[column[0].column_letter].width = max_length + extend_width
 
 
-def to_excel(images: list, columns_name: list[str]) -> None:
+def to_excel(images: list, columns_name: list[str], file_name: Path) -> None:
     wb = Workbook()
     ws: Worksheet = wb.active
     # TODO: Изменить название страницы
@@ -45,7 +42,7 @@ def to_excel(images: list, columns_name: list[str]) -> None:
     for item in images:
         ws.append(tuple(item.model_dump().values()))
 
-    wb.save(FILE_NAME_TO_SAVE)
+    wb.save(file_name)
 
 
 def get_extension_by_coefficient(value: Union[int, float]) -> AspectRatio:
