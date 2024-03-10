@@ -8,7 +8,7 @@ from scripts.distribution_by_size import get_unique_values
 from scripts.final_table_without_variations import run_final_table_without_variations
 from scripts.final_table_with_variations import run_final_table_with_variations
 import settings
-from domain import DistributedPictures, ImageParameters
+from domain import DistributedPictures, ImageParameters, FinalTable
 from abc import abstractmethod
 
 
@@ -156,7 +156,7 @@ class TabThree:
         self.tab = tab
         name_script = "Скрипт 3. Распределение по папкам после фотошопа."
         self.name_file = "Промежуточная_таблица_3.xlsx"
-        self.COLUMN_TITLE = [field.description for _, field in ImageParameters.model_fields.items()]
+        self.COLUMN_TITLE = [field.description for _, field in DistributedPictures.model_fields.items()]
         self.file_excel = None
 
         # Создание метки наименования
@@ -239,7 +239,7 @@ class TabFour(BaseTab):
         self.name_file = "Промежуточная_таблица_4.xlsx"
         super().__init__(
             tab=self.tab,
-            base_model=DistributedPictures,
+            base_model=FinalTable,
             name_script=name_script,
             name_file=self.name_file,
         )
@@ -255,7 +255,7 @@ class TabFive(BaseTab):
         self.name_file = "Промежуточная_таблица_5.xlsx"
         super().__init__(
             tab=self.tab,
-            base_model=DistributedPictures,
+            base_model=FinalTable,
             name_script=name_script,
             name_file=self.name_file,
         )
@@ -281,17 +281,28 @@ class TabSettings:
         self.entry_update_article.insert(tk.END, settings.article)
         self.entry_update_article.grid(row=2, column=0, padx=20, pady=10)
 
+        # Создание метки для изменения ссылки
+        self.text_update_url = tk.CTkLabel(self.tab, text="Ссылка:")
+        self.text_update_url.grid(row=3, column=0, padx=20, pady=10)
+
+        # Создание окна для изменения ссылки
+        self.entry_update_url = tk.CTkEntry(self.tab, width=500)
+        self.entry_update_url.insert(tk.END, settings.url)
+        self.entry_update_url.grid(row=4, column=0, padx=20, pady=10)
+
         # Создание кнопки для изменения настроек
         self.button_choice_directory = tk.CTkButton(self.tab, text="Изменить", command=self.update_settings)
-        self.button_choice_directory.grid(row=3, column=0, padx=20, pady=10)
+        self.button_choice_directory.grid(row=5, column=0, padx=20, pady=10)
 
         # Создание окна лога
         self.text_log = tk.CTkTextbox(self.tab)
-        self.text_log.grid(row=4, column=0, padx=20, pady=10)
+        self.text_log.grid(row=6, column=0, padx=20, pady=10)
 
     def update_settings(self):
         article = self.entry_update_article.get()
+        url = self.entry_update_url.get()
         settings.update_article_settings(article)
+        settings.update_url_settings(url)
         self.log(message="Настройки изменены!")
 
     def log(self, message):

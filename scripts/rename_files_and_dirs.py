@@ -1,5 +1,7 @@
 import os
 from typing import Union
+
+import settings
 from constants import TRANSLATE
 from domain import AspectRatio, Orientation, ImageParameters, DistributedPictures
 from pathlib import Path
@@ -225,7 +227,7 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str, lo
             sub_folders.append(file)
 
         if file.is_file():
-            new_img_name = f"{new_name_dir}-{count}.jpg"
+            new_img_name = f"{article}-{new_name_dir}-{count}.jpg"
             try:
                 img = Image.open(file)
                 width, height = img.size
@@ -243,7 +245,7 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str, lo
                 width = height = coefficient = aspect_ratio = orientation = None
 
             img_name = f"{directory.name} Арт.{article}"
-            img_link = f"https://liss-art.ru/wp-content/uploads/img-product1" + str(new_full_path_dir) + new_img_name
+            img_link = settings.url + str(new_full_path_dir).replace("\\", "/") + "/" + new_img_name
 
             image_parameters = ImageParameters(
                 old_name_dir=str(old_name_dir),
