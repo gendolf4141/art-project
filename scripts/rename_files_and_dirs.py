@@ -233,14 +233,14 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str, lo
                 coefficient = round(max(width, height) / min(width, height), 3)
                 aspect_ratio = get_extension_by_coefficient(coefficient)
                 orientation = get_orientation_by_aspect_ratio(width, height)
-            except UnidentifiedImageError:
+                os.remove(file)
+            except (UnidentifiedImageError, OSError):
                 new_img_name = f"Не удается идентифицировать файл изображения: {file}"
                 log.append(new_name_dir)
                 width = height = coefficient = aspect_ratio = orientation = None
 
             img_name = f"{directory.name} Арт.{article}"
             img_link = f"https://liss-art.ru/wp-content/uploads/img-product1" + str(new_full_path_dir) + new_img_name
-            os.remove(file)
 
             image_parameters = ImageParameters(
                 old_name_dir=str(old_name_dir),

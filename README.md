@@ -18,6 +18,8 @@ git clone https://github.com/gendolf4141/art-project.git
 cd art-project
 ```
 
+Скопировать содержимое файла .env.example в файл .env
+
 Запустить скипт для сборки проекта
 ```
 bash run.sh
