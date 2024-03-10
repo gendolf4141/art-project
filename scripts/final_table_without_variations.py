@@ -18,7 +18,7 @@ def run_final_table_without_variations(file_excel: Path):
         final_table = FinalTable(
             id=row[8],
             article=int(row[10]),
-            name=f"Картина {row[0]} {row[10]}",
+            name=f"Картина {row[0]} Арт.{row[10]}",
             category=row[11],
             images=row[12],
             attribute_values_1=SIZE.get(row[8])[0],
