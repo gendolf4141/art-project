@@ -17,7 +17,6 @@ def run_distribution_files_in_base_path(file_excel: Path, base_path: Path):
     if not os.path.exists(str(directory_path)):
         os.mkdir(directory_path)
 
-    values = []
     logs = []
     distributed_pictures_dict: dict[str, DistributedPictures] = {}
 

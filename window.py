@@ -290,19 +290,30 @@ class TabSettings:
         self.entry_update_url.insert(tk.END, settings.url)
         self.entry_update_url.grid(row=4, column=0, padx=20, pady=10)
 
+        # Создание метки для изменения файла вариаций
+        self.text_update_variable = tk.CTkLabel(self.tab, text="Файл вариаций:")
+        self.text_update_variable.grid(row=5, column=0, padx=20, pady=10)
+
+        # Создание окна для изменения файла вариаций
+        self.entry_update_variable = tk.CTkEntry(self.tab, width=500)
+        self.entry_update_variable.insert(tk.END, settings.variable)
+        self.entry_update_variable.grid(row=6, column=0, padx=20, pady=10)
+
         # Создание кнопки для изменения настроек
         self.button_choice_directory = tk.CTkButton(self.tab, text="Изменить", command=self.update_settings)
-        self.button_choice_directory.grid(row=5, column=0, padx=20, pady=10)
+        self.button_choice_directory.grid(row=7, column=0, padx=20, pady=10)
 
         # Создание окна лога
         self.text_log = tk.CTkTextbox(self.tab)
-        self.text_log.grid(row=6, column=0, padx=20, pady=10)
+        self.text_log.grid(row=8, column=0, padx=20, pady=10)
 
     def update_settings(self):
         article = self.entry_update_article.get()
         url = self.entry_update_url.get()
+        variable = self.entry_update_variable.get()
         settings.update_article_settings(article)
         settings.update_url_settings(url)
+        settings.update_variable_settings(variable)
         self.log(message="Настройки изменены!")
 
     def log(self, message):

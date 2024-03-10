@@ -1,7 +1,22 @@
 from pathlib import Path
 from openpyxl import load_workbook
-from domain import FinalTable
-from constants import VARIATIONS
+import settings
+from domain import FinalTableWithVariations
+
+
+def get_variable():
+    workbook = load_workbook(filename=settings.variable)
+    sheet = workbook["Вариации"]
+    variable = {}
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        if row[0] not in variable:
+            variable[row[0]] = []
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        variable[row[0]].append(row)
+
+    return variable
 
 
 def read_excel(file_excel: Path):
@@ -14,20 +29,24 @@ def run_final_table_with_variations(file_excel: Path):
     data = read_excel(file_excel)
     final_tables = []
     logs = []
+    variable = get_variable()
+
     for row in data:
-        final_tables_dict = {}
-        for i, key in enumerate(FinalTable.__fields__.keys()):
-            if row[i] is not None:
-                final_tables_dict[key] = row[i]
+        name_img = row[3]
+        parent = row[2]
+        pages = variable.get(row[0])
+        if pages:
+            for page in pages:
+                page = list(page)
+                page[3] = name_img
 
-        final_table = FinalTable(**final_tables_dict)
-
-        variations = VARIATIONS.get(final_table.id)
-
-        if variations:
-            for variation in variations:
-                final_table.base_price = variation(0)
-                final_table.position = variation(1)
-                final_table.attribute_values_1 = variation(2)
+                final_tables_dict = {}
+                for i, key in enumerate(FinalTableWithVariations.__fields__.keys()):
+                    if page[i] is not None:
+                        final_tables_dict[key] = page[i]
+                final_table = FinalTableWithVariations(**final_tables_dict)
+                final_table.parent = parent
+                final_table.article = str(final_table.parent) + "-" + str(final_table.position)
+                final_tables.append(final_table)
 
     return final_tables, logs

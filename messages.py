@@ -12,6 +12,12 @@ def show_warning_no_article() -> str:
     return msg
 
 
+def show_warning_no_variable() -> str:
+    msg = "Необходимо задать значение по умолчанию для VARIABLE в файле .env!"
+    mb.showwarning("Предупреждение", msg)
+    return msg
+
+
 def show_warning_no_url() -> str:
     msg = "Необходимо задать значение по умолчанию для URL в файле .env!"
     mb.showwarning("Предупреждение", msg)
