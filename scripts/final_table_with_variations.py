@@ -34,7 +34,15 @@ def run_final_table_with_variations(file_excel: Path):
     for row in data:
         name_img = row[3]
         parent = row[2]
-        pages = variable.get(row[0])
+
+        pages = []
+        pages.append(row)
+        vars = variable.get(row[0])
+
+        if vars:
+            for var in vars:
+                pages.extend(var)
+
         if pages:
             for page in pages:
                 page = list(page)
@@ -44,9 +52,14 @@ def run_final_table_with_variations(file_excel: Path):
                 for i, key in enumerate(FinalTableWithVariations.__fields__.keys()):
                     if page[i] is not None:
                         final_tables_dict[key] = page[i]
+
                 final_table = FinalTableWithVariations(**final_tables_dict)
                 final_table.parent = parent
-                final_table.article = str(final_table.parent) + "-" + str(final_table.position)
+
+                final_table.article = str(final_table.parent)
+                if final_table.position:
+                    final_table.article = str(final_table.parent) + "-" + str(final_table.position)
+                    
                 final_tables.append(final_table)
 
     return final_tables, logs
