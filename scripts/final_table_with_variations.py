@@ -41,7 +41,7 @@ def run_final_table_with_variations(file_excel: Path):
 
         if vars:
             for var in vars:
-                pages.extend(var)
+                pages.append(var)
 
         if pages:
             for page in pages:
@@ -59,7 +59,7 @@ def run_final_table_with_variations(file_excel: Path):
                 final_table.article = str(final_table.parent)
                 if final_table.position:
                     final_table.article = str(final_table.parent) + "-" + str(final_table.position)
-                    
+
                 final_tables.append(final_table)
 
     return final_tables, logs
