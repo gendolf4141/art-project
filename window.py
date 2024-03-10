@@ -151,20 +151,85 @@ class TabTwo(BaseTab):
         return get_unique_values(file_excel)
 
 
-class TabThree(BaseTab):
+class TabThree:
     def __init__(self, tab: tk.CTkFrame):
         self.tab = tab
         name_script = "Скрипт 3. Распределение по папкам после фотошопа."
         self.name_file = "Промежуточная_таблица_3.xlsx"
-        super().__init__(
-            tab=self.tab,
-            base_model=DistributedPictures,
-            name_script=name_script,
-            name_file=self.name_file,
+        self.COLUMN_TITLE = [field.description for _, field in ImageParameters.model_fields.items()]
+        self.file_excel = None
+
+        # Создание метки наименования
+        self.label = tk.CTkLabel(master=self.tab, text=name_script)
+        self.label.grid(row=0, columnspan=2, padx=20, pady=10)
+
+        # Создание метки для выбора исходной папки
+        self.text_choice_directory = tk.CTkLabel(self.tab, text="Исходная папка с изображениями:")
+        self.text_choice_directory.grid(row=1, columnspan=2, padx=20, pady=10)
+
+        # Создание окна выбора исходной папки
+        self.entry_choice_directory = tk.CTkEntry(self.tab, width=500)
+        self.entry_choice_directory.grid(row=2, columnspan=2, padx=20, pady=10)
+
+        # Создание кнопки запуска скрипта
+        self.button_get_directory = tk.CTkButton(self.tab, text="Выбор папки", command=self.get_directory)
+        self.button_get_directory.grid(row=3, column=1, padx=20, pady=10)
+
+        # Создание метки для выбора исходной папки
+        self.text_choice_file = tk.CTkLabel(self.tab, text="Исходный файл excel:")
+        self.text_choice_file.grid(row=4, columnspan=2, padx=20, pady=10)
+
+        # Создание окна выбора исходной папки
+        self.entry_get_file = tk.CTkEntry(self.tab, width=500)
+        self.entry_get_file.grid(row=5, columnspan=2, padx=20, pady=10)
+
+        # Создание кнопки запуска скрипта
+        self.button_choice_directory = tk.CTkButton(self.tab, text="Запустить", command=self.run_script)
+        self.button_choice_directory.grid(row=6, column=0, padx=20, pady=10)
+
+        # Создание кнопки запуска скрипта
+        self.button_get_file = tk.CTkButton(self.tab, text="Выбор файла", command=self.get_excel)
+        self.button_get_file.grid(row=6, column=1, padx=20, pady=10)
+
+        # Создание окна лога
+        self.text_log = tk.CTkTextbox(self.tab)
+        self.text_log.grid(row=7, columnspan=2, padx=20, pady=10)
+
+        self.folder_selected: Path | None = None
+
+    def log(self, message):
+        self.text_log.insert('end', message + '\n')
+        self.text_log.see('end')
+
+    def run_script(self):
+        if not self.folder_selected or not self.folder_selected.is_dir():
+            return show_warning_no_directory()
+
+        if not self.file_excel or not self.file_excel.is_file():
+            return show_warning_no_directory()
+
+        self.log("Скрипт запущен!")
+
+        images_parameters, logs = run_distribution_files_in_base_path(
+            file_excel=self.file_excel,
+            base_path=self.folder_selected,
         )
 
-    def script(self, file_excel: Path):
-        return run_distribution_files_in_base_path(file_excel)
+        new_file_excel = self.file_excel.parent / self.name_file
+        to_excel(images_parameters, self.COLUMN_TITLE, new_file_excel)
+
+        for log in logs:
+            self.log(log)
+
+        self.log(show_info_script_completed())
+
+    def get_directory(self):
+        self.folder_selected = Path(filedialog.askdirectory())
+        self.entry_choice_directory.insert(tk.END, self.folder_selected)
+
+    def get_excel(self):
+        self.file_excel = Path(filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")]))
+        self.entry_get_file.insert(tk.END, self.file_excel)
 
 
 class TabFour(BaseTab):

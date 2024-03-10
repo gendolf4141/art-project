@@ -233,7 +233,10 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str, lo
                 coefficient = round(max(width, height) / min(width, height), 3)
                 aspect_ratio = get_extension_by_coefficient(coefficient)
                 orientation = get_orientation_by_aspect_ratio(width, height)
-                os.remove(file)
+
+                if file.name != new_img_name:
+                    os.remove(file)
+
             except (UnidentifiedImageError, OSError):
                 new_img_name = f"Не удается идентифицировать файл изображения: {file}"
                 log.append(new_name_dir)

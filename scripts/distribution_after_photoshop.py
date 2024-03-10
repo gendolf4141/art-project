@@ -5,7 +5,7 @@ from domain import DistributedPictures
 import shutil
 
 
-def run_distribution_files_in_base_path(file_excel: Path):
+def run_distribution_files_in_base_path(file_excel: Path, base_path: Path):
     workbook = load_workbook(filename=file_excel)
     sheet = workbook["Страница"]
 
@@ -20,6 +20,9 @@ def run_distribution_files_in_base_path(file_excel: Path):
 
     for row in sheet.iter_rows(min_row=2, values_only=True):
         old_img_path = Path(row[14])
+        directory_parent = Path(str(old_img_path).replace(str(old_img_path.parent.parent), str(base_path)))
+        old_img_path = directory_parent
+
         img_name = old_img_path.name.replace(".jpg", "")
         new_img_path = Path(row[4])
         images_path = sorted(old_img_path.parent.glob('*.jpg'))
@@ -48,6 +51,7 @@ def run_distribution_files_in_base_path(file_excel: Path):
                     new_path=str(old_img_path),
                 )
                 values.append(distributed_pictures)
+                print(copy_from, copy_to)
                 shutil.copy(copy_from, copy_to)
 
     return values, logs
