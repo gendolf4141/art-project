@@ -37,7 +37,6 @@ def _format_xlsx_title(ws: Worksheet, title: list[str], extend_width: int = 0) -
 def to_excel(images: list, columns_name: list[str], file_name: Path) -> None:
     wb = Workbook()
     ws: Worksheet = wb.active
-    # TODO: Изменить название страницы
     ws.title = "Страница"
     _format_xlsx_title(ws=ws, title=columns_name)
 
@@ -209,7 +208,7 @@ def rename_path(images_parameters: list[ImageParameters], root_dir: Path) -> Non
     os.rename(root_dir, root_dir.parent / translate(root_dir.name))
 
 
-def run_fast_scandir(directory: Path, article: int, base_directory_name: str, log: list[str]):
+def run_rename_files_and_dirs(directory: Path, article: int, base_directory_name: str, log: list[str]):
     count = 1
     sub_folders = []
     images_parameters = []
@@ -268,7 +267,7 @@ def run_fast_scandir(directory: Path, article: int, base_directory_name: str, lo
             images_parameters.append(image_parameters)
 
     for dir in list(sub_folders):
-        sf, file, article, log = run_fast_scandir(dir, article, base_directory_name, log)
+        sf, file, article, log = run_rename_files_and_dirs(dir, article, base_directory_name, log)
         sub_folders.extend(sf)
         images_parameters.extend(file)
 

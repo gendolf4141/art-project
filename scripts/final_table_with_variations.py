@@ -13,7 +13,6 @@ def get_variable():
         if row[0] not in variable:
             variable[row[0]] = []
 
-    for row in sheet.iter_rows(min_row=2, values_only=True):
         variable[row[0]].append(row)
 
     return variable

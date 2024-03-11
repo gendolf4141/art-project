@@ -4,6 +4,7 @@
 
 Для переноса проекта на локальный компьютер необходимо установить GIT(Система управления версиями)
 https://git-scm.com/download/win/
+
 Для запуска проекта необходимо установить python вирсии 3.12
 https://www.python.org/downloads/release/python-3120/
 
