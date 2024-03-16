@@ -23,7 +23,7 @@ else:
         is_random_links = False
     else:
         is_random_links = True
-print(is_random_links)
+
 
 if not article:
     show_warning_no_article()

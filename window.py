@@ -317,8 +317,10 @@ class TabSettings:
     def checkbox_event(self):
         if self.check_var.get() == 'on':
             self.is_random_links = True
+            settings.is_random_links = True
         else:
             self.is_random_links = False
+            settings.is_random_links = False
 
     def update_settings(self):
         article = self.entry_update_article.get()
@@ -380,8 +382,8 @@ class App(tk.CTk):
         label_3.grid(row=5, column=0, ipadx=50, padx=1, pady=1, sticky="w")
 
         # Создание окна лога
-        self.text_log = tk.CTkTextbox(self)
-        self.text_log.grid(row=7, column=0, padx=20, pady=10)
+        self.text_log = tk.CTkTextbox(self, width=550)
+        self.text_log.grid(row=7, column=0, columnspan=3, padx=20, pady=10)
 
         self.tab_view = MyTabView(master=self, text_log=self.text_log)
         self.tab_view.grid(row=6, column=0, padx=20, pady=20)
