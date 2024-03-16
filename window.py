@@ -297,9 +297,28 @@ class TabSettings:
         self.entry_update_variable.insert(tk.END, settings.variable)
         self.entry_update_variable.grid(row=3, column=1, columnspan=2, padx=20, pady=10)
 
+        # Создание метки для перемешивания ссылок
+        self.text_random_links = tk.CTkLabel(self.tab, text="Перемешать ссылки:")
+        self.text_random_links.grid(row=4, column=0, padx=20, pady=10)
+
+        # Создание метки для изменения файла вариаций
+        value = "on" if settings.is_random_links else "off"
+        self.is_random_links = settings.is_random_links
+        self.check_var = tk.StringVar(value=value)
+        self.random_links_box = tk.CTkCheckBox(
+            self.tab, text="", command=self.checkbox_event, variable=self.check_var, onvalue="on", offvalue="off"
+        )
+        self.random_links_box.grid(row=4, column=1, padx=20, pady=10)
+
         # Создание кнопки для изменения настроек
         self.button_choice_directory = tk.CTkButton(self.tab, text="Изменить", command=self.update_settings)
-        self.button_choice_directory.grid(row=4, column=1, padx=20, pady=10)
+        self.button_choice_directory.grid(row=5, column=1, padx=20, pady=10)
+
+    def checkbox_event(self):
+        if self.check_var.get() == 'on':
+            self.is_random_links = True
+        else:
+            self.is_random_links = False
 
     def update_settings(self):
         article = self.entry_update_article.get()
@@ -308,6 +327,7 @@ class TabSettings:
         settings.update_article_settings(article)
         settings.update_url_settings(url)
         settings.update_variable_settings(variable)
+        settings.update_is_random_links_settings(self.is_random_links)
         self.log(message="Настройки изменены!")
 
     def log(self, message):
