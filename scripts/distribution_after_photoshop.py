@@ -18,7 +18,7 @@ def process_string(input_string, new_element) -> str:
         random.shuffle(elements)
 
     # Соединение списка обратно в строку с разделителем запятой
-    output_string = ', '.join(set(elements))
+    output_string = ', '.join(elements)
 
     return output_string
 
