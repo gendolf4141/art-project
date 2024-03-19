@@ -1,7 +1,9 @@
 from pathlib import Path
+
 from openpyxl import load_workbook
-from domain import FinalTable
+
 from constants import SIZE
+from domain import FinalTable
 
 
 def read_excel(file_excel: Path):

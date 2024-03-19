@@ -1,5 +1,7 @@
 from pathlib import Path
+
 from openpyxl import load_workbook
+
 import settings
 from domain import FinalTableWithVariations
 

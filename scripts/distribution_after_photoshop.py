@@ -1,11 +1,12 @@
 import os
+import random
+import shutil
+from pathlib import Path
+
+from openpyxl import load_workbook
 
 import settings
-from openpyxl import load_workbook
-from pathlib import Path
 from domain import DistributedPictures
-import shutil
-import random
 
 
 def process_string(input_string, new_element) -> str:
@@ -81,7 +82,3 @@ def run_distribution_files_in_base_path(file_excel: Path, base_path: Path):
                 shutil.copy(copy_from, copy_to)
 
     return distributed_pictures_dict.values(), logs
-
-
-
-

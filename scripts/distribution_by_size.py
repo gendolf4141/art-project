@@ -1,9 +1,10 @@
 import os
 import shutil
-from openpyxl import load_workbook
 from pathlib import Path
-from domain import Orientation
-from domain import DistributedPictures
+
+from openpyxl import load_workbook
+
+from domain import DistributedPictures, Orientation
 
 
 def create_aspect_ratio_name(aspect_ratio: str, orientation: str):

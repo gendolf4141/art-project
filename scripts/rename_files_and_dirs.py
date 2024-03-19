@@ -1,15 +1,15 @@
 import os
-from typing import Union
-
-import settings
-from constants import TRANSLATE
-from domain import AspectRatio, Orientation, ImageParameters, DistributedPictures
 from pathlib import Path
-from PIL import Image, UnidentifiedImageError
+from typing import Union
 
 from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.workbook import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
+from PIL import Image, UnidentifiedImageError
+
+import settings
+from constants import TRANSLATE
+from domain import AspectRatio, ImageParameters, Orientation
 
 
 def _format_xlsx_title(ws: Worksheet, title: list[str], extend_width: int = 0) -> None:
@@ -272,5 +272,3 @@ def run_rename_files_and_dirs(directory: Path, article: int, base_directory_name
         images_parameters.extend(file)
 
     return sub_folders, images_parameters, article, log
-
-
