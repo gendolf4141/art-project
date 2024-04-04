@@ -7,8 +7,9 @@ from scripts.distribution_after_photoshop import run_distribution_files_in_base_
 from scripts.distribution_by_size import get_unique_values
 from scripts.final_table_without_variations import run_final_table_without_variations
 from scripts.final_table_with_variations import run_final_table_with_variations
+from scripts.repeat_images import run_repeat_images
 import settings
-from domain import DistributedPictures, ImageParameters, FinalTable
+from domain import DistributedPictures, ImageParameters, FinalTable, RepeatImages
 from abc import abstractmethod
 
 
@@ -261,6 +262,62 @@ class TabFive(BaseTab):
         return run_final_table_with_variations(file_excel)
 
 
+class TabSix:
+    def __init__(self, tab: tk.CTkFrame, text_log: tk.CTkTextbox):
+        self.tab = tab
+        self.COLUMN_TITLE = [field.description for _, field in RepeatImages.model_fields.items()]
+        self.name_file = "Промежуточная_таблица_6.xlsx"
+        self.text_log = text_log
+
+        # Создание метки наименования
+        self.label = tk.CTkLabel(master=self.tab, text="Скрипт 6. Категории с одинаковыми изображениями.")
+        self.label.grid(row=0, columnspan=2, padx=20, pady=10)
+
+        # Создание метки для выбора исходной папки
+        self.text_choice_directory = tk.CTkLabel(self.tab, text="Исходная папка с изображениями:")
+        self.text_choice_directory.grid(row=1, columnspan=2, padx=20, pady=10)
+
+        # Создание окна выбора исходной папки
+        self.entry_choice_directory = tk.CTkEntry(self.tab, width=500)
+        self.entry_choice_directory.grid(row=2, columnspan=2, padx=20, pady=10)
+
+        # Создание кнопки запуска скрипта
+        self.button_choice_directory = tk.CTkButton(self.tab, text="Запустить", command=self.run_script)
+        self.button_choice_directory.grid(row=3, column=0, padx=20, pady=10)
+
+        # Создание кнопки запуска скрипта
+        self.button_get_directory = tk.CTkButton(self.tab, text="Выбор папки", command=self.get_directory)
+        self.button_get_directory.grid(row=3, column=1, padx=20, pady=10)
+
+        self.folder_selected: Path | None = None
+
+    def log(self, message):
+        self.text_log.insert('end', message + '\n')
+        self.text_log.see('end')
+
+    def run_script(self):
+        if not self.folder_selected or not self.folder_selected.is_dir():
+            return show_warning_no_directory()
+        self.log("Скрипт запущен!")
+        logs = []
+        sub_folders, images_parameters = run_repeat_images(
+            self.folder_selected,
+            self.folder_selected.name,
+        )
+        images = [value for value in images_parameters.values()]
+        new_file_excel = self.folder_selected.parent / self.name_file
+        to_excel(images, self.COLUMN_TITLE, new_file_excel)
+
+        for log in logs:
+            self.log(log)
+
+        self.log(show_info_script_completed())
+
+    def get_directory(self):
+        self.folder_selected = Path(filedialog.askdirectory())
+        self.entry_choice_directory.insert(tk.END, self.folder_selected)
+
+
 class TabSettings:
     def __init__(self, tab: tk.CTkFrame, text_log: tk.CTkTextbox):
         self.tab = tab
@@ -349,13 +406,15 @@ class MyTabView(tk.CTkTabview):
         self.add("4")
         self.add("5")
         self.add("6")
+        self.add("7")
 
         TabOne(self.tab("1"), self.text_log)
         TabTwo(self.tab("2"), self.text_log)
         TabThree(self.tab("3"), self.text_log)
         TabFour(self.tab("4"), self.text_log)
         TabFive(self.tab("5"), self.text_log)
-        TabSettings(self.tab("6"), self.text_log)
+        TabSix(self.tab("6"), self.text_log)
+        TabSettings(self.tab("7"), self.text_log)
 
 
 class App(tk.CTk):
@@ -378,13 +437,16 @@ class App(tk.CTk):
         label_5 = tk.CTkLabel(master=self, text="5. Составление таблицы финальной таблицы c вариациями.")
         label_5.grid(row=4, column=0, ipadx=50, padx=1, pady=1, sticky="w")
 
-        label_3 = tk.CTkLabel(master=self, text="6. Настройки.")
-        label_3.grid(row=5, column=0, ipadx=50, padx=1, pady=1, sticky="w")
+        label_6 = tk.CTkLabel(master=self, text="6. Категории с одинаковыми изображениями.")
+        label_6.grid(row=5, column=0, ipadx=50, padx=1, pady=1, sticky="w")
+
+        label_7 = tk.CTkLabel(master=self, text="7. Настройки.")
+        label_7.grid(row=6, column=0, ipadx=50, padx=1, pady=1, sticky="w")
 
         # Создание окна лога
         self.text_log = tk.CTkTextbox(self, width=550)
-        self.text_log.grid(row=7, column=0, columnspan=3, padx=20, pady=10)
+        self.text_log.grid(row=8, column=0, columnspan=3, padx=20, pady=10)
 
         self.tab_view = MyTabView(master=self, text_log=self.text_log)
-        self.tab_view.grid(row=6, column=0, padx=20, pady=20)
+        self.tab_view.grid(row=7, column=0, padx=20, pady=20)
 

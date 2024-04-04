@@ -56,8 +56,9 @@ def run_final_table_with_variations(file_excel: Path):
 
                 final_table = FinalTableWithVariations(**final_tables_dict)
                 final_table.parent = parent
-
+                final_table.id = ""
                 final_table.article = str(final_table.parent)
+
                 if final_table.position:
                     final_table.article = str(final_table.parent) + "-" + str(final_table.position)
 

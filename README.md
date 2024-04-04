@@ -25,3 +25,9 @@ cd art-project
 ```
 bash run.sh
 ```
+
+
+Перезаписать данные из удаленного репозитория
+```angular2html
+git pull --rebase
+```

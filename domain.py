@@ -102,7 +102,7 @@ class FinalTable(BaseModel):
 
 
 class FinalTableWithVariations(BaseModel):
-    id: str = Field(description="ID")
+    id: str | None = Field(description="ID", default=None)
     type: str | None = Field(description="Тип", default=None)
     article: int | None = Field(description="Артикул", default=None)
     name: str | None = Field(description="Имя", default=None)
@@ -163,6 +163,11 @@ class FinalTableWithVariations(BaseModel):
     visibility_attribute_4: int | None = Field(description="Видимость атрибута 4", default=None)
     global_attribute_4: int | None = Field(description="Глобальный атрибут 4", default=None)
 
+
 class DistributedPictures(ImageParameters):
     new_path: str = Field(description="Полный путь распределения")
 
+
+class RepeatImages(BaseModel):
+    name: str = Field(description="Имя")
+    category: str = Field(description="Категории")
