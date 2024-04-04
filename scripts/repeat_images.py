@@ -1,15 +1,5 @@
 import os
 from pathlib import Path
-from typing import Union
-
-from openpyxl.styles import Alignment, Border, Font, Side
-from openpyxl.workbook import Workbook
-from openpyxl.worksheet.worksheet import Worksheet
-from PIL import Image, UnidentifiedImageError
-from scripts.rename_files_and_dirs import to_excel
-
-import settings
-from constants import TRANSLATE
 from domain import RepeatImages
 
 
@@ -41,10 +31,7 @@ def create_category(directory: Path, base_path_name: str) -> str:
     return category
 
 
-images_parameters: dict[str, RepeatImages] = {}
-
-
-def run_repeat_images(directory: Path, base_directory_name: str):
+def run_repeat_images(directory: Path, base_directory_name: str, images_parameters: dict[str, RepeatImages] = {}):
     sub_folders = []
     # Перебираем все папки в директории
     for file in directory.iterdir():
