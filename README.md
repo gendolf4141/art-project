@@ -31,3 +31,17 @@ bash run.sh
 ```angular2html
 git pull --rebase
 ```
+
+
+Сохратить локальные изменения:
+Посмотреть какие файлы были изменены:
+```angular2html
+git status
+```
+
+Сохранить изменения:
+```angular2html
+git add .
+git commit -m "Комментарий"
+git push
+```
