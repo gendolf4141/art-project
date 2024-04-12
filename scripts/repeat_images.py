@@ -44,7 +44,6 @@ def run_repeat_images(directory: Path, base_directory_name: str, images_paramete
             if file.name in images_parameters:
                 repeat_image = images_parameters[file.name]
                 repeat_image.category += f", {category}"
-                os.remove(directory / file)
             else:
                 repeat_image = RepeatImages(
                     name=str(file.name),
