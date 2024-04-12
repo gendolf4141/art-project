@@ -261,6 +261,7 @@ def run_rename_files_and_dirs(directory: Path, article: int, base_directory_name
                 category=category,
                 img_link=img_link,
                 img_name=img_name,
+                old_name=file.name,
             )
             article += 1
             count += 1

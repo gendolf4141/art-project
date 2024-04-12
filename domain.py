@@ -21,7 +21,8 @@ class Orientation(Enum):
     SQUARE = "Квадратные"
 
 
-class ImageParameters(BaseModel):
+
+class ImageParametersBase(BaseModel):
     old_name_dir: str = Field(description="Наименование директории, до")
     new_name_dir: str = Field(description="Наименование директории, после")
     new_img_name: str = Field(description="Наименование изображения, после")
@@ -36,6 +37,10 @@ class ImageParameters(BaseModel):
     category: str = Field(description="Категория")
     img_link: str = Field(description="Ссылка на изображение")
     img_name: str = Field(description="Название картины")
+
+
+class ImageParameters(ImageParametersBase):
+    old_name: str = Field(description="Название картины, до")
 
 
 class FinalTable(BaseModel):
@@ -164,7 +169,7 @@ class FinalTableWithVariations(BaseModel):
     global_attribute_4: int | None = Field(description="Глобальный атрибут 4", default=None)
 
 
-class DistributedPictures(ImageParameters):
+class DistributedPictures(ImageParametersBase):
     new_path: str = Field(description="Полный путь распределения")
 
 
